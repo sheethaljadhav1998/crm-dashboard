@@ -1,8 +1,7 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ThemeProvider } from "next-themes";
 import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -10,11 +9,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
         () => new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false } } })
     );
     return (
-        <ThemeProvider attribute="class" forcedTheme="light" enableSystem>
-            <QueryClientProvider client={client}>
-                {children}
-                <Toaster richColors position="top-right" />
-            </QueryClientProvider>
-        </ThemeProvider>
+        <QueryClientProvider client={client}>
+            {children}
+            <Toaster richColors position="top-right" />
+        </QueryClientProvider>
     );
 }

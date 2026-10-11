@@ -1,7 +1,9 @@
+import { existsSync } from "node:fs";
 import type { NextConfig } from "next";
 
+if (existsSync(".env.dev")) process.loadEnvFile(".env.dev");
+
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

@@ -7,9 +7,4 @@ export type Lead = {
     job: string;
 };
 
-export type LeadInput = {
-    first_name: string;
-    last_name: string;
-    email: string;
-    job?: string;
-};
+export type ApiUser = Partial<Omit<Lead, "job">>;

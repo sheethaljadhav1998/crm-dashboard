@@ -1,43 +1,46 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AlertCircle, RefreshCw, Search, Users } from "lucide-react";
+import { AlertCircle, RefreshCw, Search, SearchX, Users, X } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LeadCard } from "@/components/lead-card";
 import { LeadGridSkeleton } from "@/components/lead-grid-skeleton";
-import { useLeads } from "@/hooks/use-leads";
 import { LeadFormDialog } from "@/components/lead-form-dialog";
+import { useLeads } from "@/hooks";
+import { filterLeads } from "@/utils";
 import { toast } from "sonner";
 
 export function LeadsDashboard() {
     const { data: leads = [], isLoading, isError, error, refetch, isFetching } = useLeads();
     const [query, setQuery] = useState("");
-
-    const filtered = useMemo(() => {
-        const q = query.trim().toLowerCase();
-        if (!q) return leads;
-        return leads.filter((l) =>
-            `${l.first_name} ${l.last_name} ${l.email} ${l.job}`.toLowerCase().includes(q)
-        );
-    }, [leads, query]);
+    const filtered = useMemo(() => filterLeads(leads, query), [leads, query]);
 
     return (
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
-            {/* Header */}
-            <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                    <div className="mb-2 flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                        <Users className="size-4" /> CRM
-                    </div>
-                    <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Lead Directory</h1>
-                    <p className="text-muted-foreground">
-                        {isLoading ? "Loading leads…" : `${leads.length} leads in your pipeline`}
-                    </p>
+            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div className="relative w-full sm:max-w-md">
+                    <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        placeholder="Search by name, email or title…"
+                        className="h-11 rounded-full bg-card pl-11 pr-10 shadow-sm"
+                    />
+                    {query && (
+                        <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            onClick={() => setQuery("")}
+                            aria-label="Clear search"
+                            className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full"
+                        >
+                            <X />
+                        </Button>
+                    )}
                 </div>
-
-                <div className="flex w-full gap-2 sm:w-auto">
+                <div className="flex gap-2">
                     <Button
                         onClick={async () => {
                             const res = await refetch();
@@ -46,39 +49,35 @@ export function LeadsDashboard() {
                         }}
                         disabled={isFetching}
                         variant="outline"
-                        className="flex-1 sm:flex-none"
+                        size="lg"
+                        className="h-11 flex-1 rounded-full bg-card px-5 shadow-sm sm:flex-none"
                     >
                         <RefreshCw className={`size-4 ${isFetching ? "animate-spin" : ""}`} />
-                        {isFetching ? "Refreshing…" : "Refresh Data"}
+                        {isFetching ? "Refreshing…" : "Refresh"}
                     </Button>
-                    <LeadFormDialog />
+                    <LeadFormDialog className="h-11 flex-1 rounded-full px-5 shadow-sm shadow-primary/20 sm:flex-none" />
                 </div>
-            </header>
-
-            {/* Search */}
-            <div className="relative mb-6 w-full sm:max-w-sm">
-                <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search by name, email or title…"
-                    className="pl-9 bg-white"
-                />
+                {!isLoading && !isError && (
+                    <p className="text-sm text-muted-foreground sm:ml-auto">
+                        Showing <span className="font-semibold text-foreground">{filtered.length}</span> of{" "}
+                        <span className="font-semibold text-foreground">{leads.length}</span> leads
+                    </p>
+                )}
             </div>
 
-            {/* Error state */}
             {isError && (
-                <div className="flex flex-col items-center gap-3 rounded-xl border border-destructive/30 bg-destructive/5 p-10 text-center">
-                    <AlertCircle className="size-8 text-destructive" />
-                    <p className="font-medium">Couldn&apos;t load leads</p>
-                    <p className="text-sm text-muted-foreground">{(error as Error).message}</p>
-                    <Button onClick={() => refetch()} variant="outline">Try again</Button>
+                <div className="flex flex-col items-center gap-3 rounded-3xl border border-destructive/20 bg-card p-12 text-center shadow-sm">
+                    <div className="flex size-12 items-center justify-center rounded-full bg-destructive/10">
+                        <AlertCircle className="size-6 text-destructive" />
+                    </div>
+                    <p className="text-lg font-semibold">Couldn&apos;t load leads</p>
+                    <p className="text-sm text-muted-foreground">{error?.message}</p>
+                    <Button onClick={() => refetch()} className="mt-2 rounded-full px-5">Try again</Button>
                 </div>
             )}
 
-            {/* Grid */}
             {!isError && (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {isLoading ? (
                         <LeadGridSkeleton />
                     ) : (
@@ -91,10 +90,20 @@ export function LeadsDashboard() {
                 </div>
             )}
 
-            {/* Empty state */}
             {!isLoading && !isError && filtered.length === 0 && (
-                <div className="rounded-xl border border-dashed p-12 text-center text-muted-foreground">
-                    {query ? "No leads match your search." : "No leads yet. Add your first lead to get started."}
+                <div className="flex flex-col items-center gap-3 rounded-3xl border border-dashed border-primary/25 bg-card/60 p-12 text-center">
+                    <div className="flex size-12 items-center justify-center rounded-full bg-secondary text-primary">
+                        {query ? <SearchX className="size-6" /> : <Users className="size-6" />}
+                    </div>
+                    <p className="text-lg font-semibold">{query ? "No matching leads" : "No leads yet"}</p>
+                    <p className="text-sm text-muted-foreground">
+                        {query ? "Try a different name, email or job title." : "Add your first lead to get started."}
+                    </p>
+                    {query && (
+                        <Button variant="secondary" onClick={() => setQuery("")} className="mt-2 rounded-full px-5">
+                            Clear search
+                        </Button>
+                    )}
                 </div>
             )}
         </div>
