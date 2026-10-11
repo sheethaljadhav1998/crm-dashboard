@@ -1,5 +1,5 @@
-import { LeadsDashboard } from "@/components/leads-dashboard";
-import { SiteHeader } from "@/components/site-header";
+import { LeadsDashboard } from "@/components/organisms/leads-dashboard";
+import { SiteHeader } from "@/components/organisms/site-header";
 
 export default function Home() {
   return (

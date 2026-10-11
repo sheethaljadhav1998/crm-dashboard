@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/atoms/button";
 import {
     Dialog,
     DialogContent,
@@ -10,8 +10,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog";
-import { LeadForm } from "@/components/lead-form";
+} from "@/components/atoms/dialog";
+import { LeadForm } from "@/components/organisms/lead-form";
 import { useCreateLead } from "@/hooks";
 
 export function LeadFormDialog({ className }: { className?: string }) {

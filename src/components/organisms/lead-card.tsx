@@ -2,11 +2,11 @@
 
 import { Mail } from "lucide-react";
 import { motion } from "framer-motion";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
-import { JobSelect } from "@/components/job-select";
-import { EditLeadDialog } from "@/components/lead-edit-dialog";
-import { DeleteLeadDialog } from "@/components/lead-delete-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/atoms/avatar";
+import { Card, CardContent } from "@/components/atoms/card";
+import { JobSelect } from "@/components/molecules/job-select";
+import { EditLeadDialog } from "@/components/organisms/lead-edit-dialog";
+import { DeleteLeadDialog } from "@/components/organisms/lead-delete-dialog";
 import { NO_JOB } from "@/constants";
 import { useUpdateJob } from "@/hooks";
 import type { Lead } from "@/types";

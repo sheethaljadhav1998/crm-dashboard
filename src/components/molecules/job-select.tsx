@@ -6,7 +6,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+} from "@/components/atoms/select";
 import { JOB_TITLES } from "@/constants";
 
 type Props = {

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { LeadForm } from "@/components/lead-form";
+import { LeadForm } from "@/components/organisms/lead-form";
 
 it("shows validation errors and does not submit an empty form", async () => {
     const onSubmit = jest.fn();

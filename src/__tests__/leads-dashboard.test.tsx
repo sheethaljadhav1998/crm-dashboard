@@ -1,7 +1,7 @@
 import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { LeadsDashboard } from "@/components/leads-dashboard";
+import { LeadsDashboard } from "@/components/organisms/leads-dashboard";
 import { getLeads } from "@/lib/api";
 import type { Lead } from "@/types";
 

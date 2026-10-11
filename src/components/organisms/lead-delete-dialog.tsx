@@ -5,8 +5,8 @@ import { Loader2, Trash2 } from "lucide-react";
 import {
     AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
     AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+} from "@/components/atoms/alert-dialog";
+import { Button } from "@/components/atoms/button";
 import { useDeleteLead } from "@/hooks";
 import type { Lead } from "@/types";
 
@@ -31,7 +31,7 @@ export function DeleteLeadDialog({ lead }: { lead: Lead }) {
                 <AlertDialogHeader>
                     <AlertDialogTitle>Delete this lead?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        {lead.first_name} {lead.last_name} will be removed from your pipeline.
+                        {lead.first_name} {lead.last_name} will be deleted.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

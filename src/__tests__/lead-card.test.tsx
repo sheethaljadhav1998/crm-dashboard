@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { LeadCard } from "@/components/lead-card";
+import { LeadCard } from "@/components/organisms/lead-card";
 import { NO_JOB } from "@/constants";
 import type { Lead } from "@/types";
 

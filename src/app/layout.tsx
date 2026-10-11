@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
-import "./globals.css";
+import "@/assets/styles/globals.css";
+import logo from "@/assets/logo.svg";
 import { Providers } from "@/components/providers";
 import { APP_DESCRIPTION, APP_NAME } from "@/constants";
 
@@ -9,6 +10,7 @@ const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-sans" });
 export const metadata: Metadata = {
   title: APP_NAME,
   description: APP_DESCRIPTION,
+  icons: { icon: logo.src },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
