@@ -24,12 +24,14 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Remove API routes (not supported by static export)
+        run: rm -rf src/app/api
       - run: npm run build
         env:
           GITHUB_PAGES: "true"
           REPO_NAME: ${{ github.event.repository.name }}
-          REQRES_BASE_URL: ${{ secrets.REQRES_BASE_URL }}
-          REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
+          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.REQRES_BASE_URL }}
+          NEXT_PUBLIC_REQRES_API_KEY: ${{ secrets.REQRES_PUBLIC_API_KEY }}
           NEXT_PUBLIC_AVATAR_BASE_URL: ${{ secrets.NEXT_PUBLIC_AVATAR_BASE_URL }}
       - run: touch out/.nojekyll
       - uses: actions/upload-pages-artifact@v3

@@ -1,4 +1,4 @@
-import { USERS_API } from "@/constants";
+import { PUBLIC_API_KEY, USERS_API } from "@/constants";
 import type { LeadInput } from "@/lib/schemas";
 import type { ApiUser, Lead } from "@/types";
 import { getAvatarUrl, getFullName, mapUserToLead, toJob } from "@/utils";
@@ -10,7 +10,9 @@ const json = (method: string, body: unknown): RequestInit => ({
 });
 
 async function request(url: string, init: RequestInit, action: string) {
-    const res = await fetch(url, init);
+    const headers = new Headers(init.headers);
+    if (PUBLIC_API_KEY) headers.set("x-api-key", PUBLIC_API_KEY);
+    const res = await fetch(url, { ...init, headers });
     if (!res.ok) throw new Error(`Could not ${action} (${res.status})`);
     return res;
 }
