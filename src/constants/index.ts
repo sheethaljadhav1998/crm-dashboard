@@ -2,6 +2,9 @@ export const REQRES_BASE_URL = process.env.REQRES_BASE_URL;
 export const AVATAR_BASE_URL = process.env.NEXT_PUBLIC_AVATAR_BASE_URL;
 export const USERS_API = "/api/users";
 
+export const APP_NAME = "CRM Lead Management Dashboard";
+export const APP_DESCRIPTION = "Track and manage your sales leads.";
+
 export const LEADS_QUERY_KEY = ["leads"];
 
 export const NAME_MAX_LENGTH = 50;
