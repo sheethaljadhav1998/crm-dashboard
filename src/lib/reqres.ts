@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 const BASE = "https://reqres.in/api";
 
-export async function fetchLeads(path: string, init?: RequestInit) {
+export async function forwardRequest(path: string, init?: RequestInit) {
     const key = process.env.REQRES_API_KEY;
     const res = await fetch(`${BASE}${path}`, {
         ...init,

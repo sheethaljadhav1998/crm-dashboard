@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { LeadCard } from "@/components/lead-card";
 import { LeadGridSkeleton } from "@/components/lead-grid-skeleton";
 import { useLeads } from "@/hooks/use-leads";
+import { LeadFormDialog } from "@/components/lead-form-dialog";
+import { toast } from "sonner";
 
 export function LeadsDashboard() {
     const { data: leads = [], isLoading, isError, error, refetch, isFetching } = useLeads();
@@ -22,27 +24,39 @@ export function LeadsDashboard() {
     }, [leads, query]);
 
     return (
-        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
             {/* Header */}
             <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                     <div className="mb-2 flex items-center gap-2 text-sm font-medium text-muted-foreground">
                         <Users className="size-4" /> CRM
                     </div>
-                    <h1 className="text-3xl font-bold tracking-tight">Lead Directory</h1>
+                    <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Lead Directory</h1>
                     <p className="text-muted-foreground">
                         {isLoading ? "Loading leads…" : `${leads.length} leads in your pipeline`}
                     </p>
                 </div>
 
-                <Button onClick={() => refetch()} disabled={isFetching} variant="outline">
-                    <RefreshCw className={`size-4 ${isFetching ? "animate-spin" : ""}`} />
-                    {isFetching ? "Refreshing…" : "Refresh Data"}
-                </Button>
+                <div className="flex w-full gap-2 sm:w-auto">
+                    <Button
+                        onClick={async () => {
+                            const res = await refetch();
+                            if (res.isError) toast.error("Could not refresh data");
+                            else toast.success("Data refreshed");
+                        }}
+                        disabled={isFetching}
+                        variant="outline"
+                        className="flex-1 sm:flex-none"
+                    >
+                        <RefreshCw className={`size-4 ${isFetching ? "animate-spin" : ""}`} />
+                        {isFetching ? "Refreshing…" : "Refresh Data"}
+                    </Button>
+                    <LeadFormDialog />
+                </div>
             </header>
 
             {/* Search */}
-            <div className="relative mb-6 max-w-sm">
+            <div className="relative mb-6 w-full sm:max-w-sm">
                 <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                     value={query}
@@ -64,7 +78,7 @@ export function LeadsDashboard() {
 
             {/* Grid */}
             {!isError && (
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {isLoading ? (
                         <LeadGridSkeleton />
                     ) : (
